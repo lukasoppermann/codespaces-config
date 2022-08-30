@@ -1,6 +1,3 @@
-alias vs='code .'
-alias clone='git clone'
-alias repos='cd ~/Repos'
 function push() {
   current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
   if [[ ($1 == "-f" && ($2 == "tag" || $2 == "tags")) ]]; then
