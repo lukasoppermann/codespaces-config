@@ -103,46 +103,31 @@ DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
 # !!!!!!!!!!!!!!!!!
 # CUSTOM STUFF
-# function push() {
-#   current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-#   if [[ ($1 == "-f" && ($2 == "tag" || $2 == "tags")) ]]; then
-#     git push -f --tags origin $current_branch
-#   elif [[ ($1 == "tag" || $1 == "tags") && $2 == "-f" ]]; then
-#     git push -f --tags origin $current_branch
-#   elif [[ $1 == "tags" || $1 == "tag"  || $1 == "--tags" ]]; then
-#     git push && git push --tags origin $current_branch
-#   elif [[ ! -z "$1" ]]; then
-#     git push $1
-#   else
-#     git push origin $current_branch
-#   fi
+function push() {
+  current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  if [[ ($1 == "-f" && ($2 == "tag" || $2 == "tags")) ]]; then
+    git push -f --tags origin $current_branch
+  elif [[ ($1 == "tag" || $1 == "tags") && $2 == "-f" ]]; then
+    git push -f --tags origin $current_branch
+  elif [[ $1 == "tags" || $1 == "tag"  || $1 == "--tags" ]]; then
+    git push && git push --tags origin $current_branch
+  elif [[ ! -z "$1" ]]; then
+    git push $1
+  else
+    git push origin $current_branch
+  fi
 
-# }
-# function cm() {
-#   msg=${*:1}
-#   if [[ -z "$msg" ]]; then
-#     echo -n "Enter a commit message:"
-#     read message
-#     msg=$message
-#   fi
-#   git commit -m "$msg"
+}
+function cm() {
+  msg=${*:1}
+  if [[ -z "$msg" ]]; then
+    echo -n "Enter a commit message:"
+    read message
+    msg=$message
+  fi
+  git commit -m "$msg"
 
-# }
-# function :() {
-# if [[ ! -z "$1" ]]; then
-#   git push origin :$1
-#   if [[ ($2 == "-b") ]]; then
-#     git branch -D $1
-#   fi
-# fi
-# }
-# function diff() {
-# if [[ ! -z "$1" ]]; then
-#   git diff --color "$@" | diff-so-fancy
-# else
-#   git diff --color | diff-so-fancy
-# fi
-# }
+}
 alias diff='git diff --color'
 alias st='git status'
 alias b='git branch'
