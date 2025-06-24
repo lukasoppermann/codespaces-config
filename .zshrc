@@ -103,6 +103,20 @@ DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
 # !!!!!!!!!!!!!!!!!
 # CUSTOM STUFF
+# Function to show branch and asterisk if dirty
+parse_git_branch() {
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+  [ -z "$branch" ] && branch=$(git rev-parse --short HEAD 2>/dev/null)
+  git diff --quiet --ignore-submodules HEAD 2>/dev/null
+  dirty=$([ $? -eq 0 ] && echo "" || echo "*")
+  echo "$branch$dirty"
+}
+
+# Set the prompt to include the branch
+setopt PROMPT_SUBST
+PROMPT='%n@%m %1~ $(parse_git_branch) %# '
+
 function push() {
   current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
   if [[ ($1 == "-f" && ($2 == "tag" || $2 == "tags")) ]]; then
